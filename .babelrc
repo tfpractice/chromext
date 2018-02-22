@@ -1,0 +1,26 @@
+{
+  "presets": [
+    "env",
+    "react",
+    [
+      "latest",
+      {
+        "modules": false
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "imports": "./imports",
+          "config": "./config"
+        }
+      }
+    ]
+  ]
+}
