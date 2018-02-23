@@ -9,10 +9,10 @@
     "32": "favicon.ico",
     "64": "favicon.ico"
   },
+  "permissions": ["activeTab", "tabs", "tabCapture"],
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "index.html",
-    "permissions": ["activeTab"],
     "start_url": "./index.html",
     "display": "standalone",
     "theme_color": "#000000",
