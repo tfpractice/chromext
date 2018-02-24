@@ -16,10 +16,9 @@ const TabObj = {
   windowId: 1,
 };
 
-export const compUrl = (a, b) => {
-  console.log('a.url - b.url', a.url < b.url);
-  return a.url < b.url;
-};
+export const compUrl = (a, b) => a.url.localeCompare(b.url);
+export const tabMap = sTabs => sTabs.map(({ id }, index) => ({ id, index }));
+export const showChrome = () => console.log('window.chrome', window.chrome);
 
 // const queryTabs = () => {
 //   const chrome = window.chrome;
