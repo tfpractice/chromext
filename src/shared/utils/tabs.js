@@ -16,17 +16,15 @@ const TabObj = {
   windowId: 1,
 };
 
+export const chrObj = () => window.chrome;
+export const chromise = () => Promise.resolve(window.chrome);
+export const query = qObj =>
+  new Promise(cb => chromise().then(chrome => chrome.tabs.query(qObj, cb)));
+
+export const move = ({ id, index }) =>
+  new Promise(cb =>
+    chromise().then(chrome => chrome.tabs.move(id, { index }), cb)
+  );
+
 export const compUrl = (a, b) => a.url.localeCompare(b.url);
 export const tabMap = sTabs => sTabs.map(({ id }, index) => ({ id, index }));
-export const showChrome = () => console.log('window.chrome', window.chrome);
-
-// const queryTabs = () => {
-//   const chrome = window.chrome;
-//
-//   // console.log('chrome', chrome);
-//   chrome.tabs.query({ currentWindow: true }, tabs => {
-//     console.log('before tabs', tabs);
-//     tabs.sort(compUrl);
-//     console.log('after tabs', tabs);
-//   });
-// };

@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import { Tabs } from '../../utils';
+import './App.css';
 
-const { tabMap, showChrome, compUrl } = Tabs;
+const { tabMap, query, compUrl, move } = Tabs;
+
+const sortTabs = tabs => tabs.sort(compUrl);
+
 const queryTabs = () => {
-  const chrome = window.chrome;
-
-  // console.log('chrome', chrome);
-  chrome.tabs.query({ currentWindow: true }, tabs => {
-    console.log('before tabs', tabMap(tabs));
-    const sortTabs = tabs.sort(compUrl);
-
-    showChrome();
-    console.log('tabMap(sortTabs)', tabMap(sortTabs));
-    console.log('after tabs', tabs);
-  });
+  query({ currentWindow: true })
+    .then(sortTabs)
+    .then(tabMap)
+    .then(tabs => Promise.all(tabs.map(move)))
+    .then(all => console.log('all', all));
 };
 
 class App extends Component {
