@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import Promise from 'bluebird';
 import logo from './logo.svg';
-import { Tabs } from '../../utils';
+import { Tabs as TabUtils } from '../../utils';
+import Tabs from '../tabs';
 import './app.css';
 
-const { tabMap, query, compUrl, move } = Tabs;
+const { tabMap, query, compUrl, move } = TabUtils;
 
 const sortTabs = tabs => tabs.sort(compUrl);
 
@@ -17,15 +19,16 @@ const queryTabs = () => {
 
 class App extends Component {
   render() {
-    console.log('process.ENV', process.ENV);
     return (
       <div className="App">
         <header className="App-header">
           <button onClick={queryTabs}>fliptabs</button>
+
           <a href="/" target="_blank">
             home
           </a>
         </header>
+        <Tabs />
         <p className="App-intro">To get started, edit and save to reload.</p>
       </div>
     );

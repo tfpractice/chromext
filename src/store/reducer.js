@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-// import { reducer as form } from 'redux-form';
-// import { auth, game, users } from './modules';
+import { tabs } from './tabs';
 
-// export default combineReducers({ users, form, auth, game });
+export default combineReducers({ tabs });

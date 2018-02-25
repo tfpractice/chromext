@@ -4,7 +4,14 @@ import React from 'react';
 import Main from './components';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
+import getStore from './store';
+import { Provider } from 'react-redux';
 
 global.Promise = Promise;
-ReactDOM.render(<Main />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={getStore()}>
+    <Main />
+  </Provider>,
+  document.getElementById('root')
+);
 registerServiceWorker();
