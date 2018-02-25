@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Tabs } from '../../utils';
-import './App.css';
+import './app.css';
 
 const { tabMap, query, compUrl, move } = Tabs;
 
@@ -17,6 +17,7 @@ const queryTabs = () => {
 
 class App extends Component {
   render() {
+    console.log('process.ENV', process.ENV);
     return (
       <div className="App">
         <header className="App-header">

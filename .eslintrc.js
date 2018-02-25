@@ -171,7 +171,7 @@ module.exports = {
       {
         ignoreCase: true,
         ignoreMemberSort: false,
-        memberSyntaxSortOrder: ['single', 'multiple', 'all', 'none'],
+        memberSyntaxSortOrder: ['none', 'single', 'all', 'multiple'],
       },
     ],
     'sort-imports-es6-autofix/sort-imports-es6': [
@@ -179,7 +179,7 @@ module.exports = {
       {
         ignoreCase: true,
         ignoreMemberSort: false,
-        memberSyntaxSortOrder: ['single', 'multiple', 'all', 'none'],
+        memberSyntaxSortOrder: ['none', 'single', 'all', 'multiple'],
       },
     ],
     'import-order-autofix/order': [
