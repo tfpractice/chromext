@@ -10,7 +10,12 @@
     "64": "favicon.ico"
   },
   "options_page": "index.html",
-  "permissions": ["activeTab", "tabs", "tabCapture"],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "history",
+    "tabCapture"
+  ],
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "index.html",

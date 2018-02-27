@@ -1,9 +1,10 @@
 import Promise from 'bluebird';
-import { SORT_TABS, SET_TABS, GET_TABS } from './constants';
+import { SORT_TABS, SET_TABS, MOVE_TAB, GET_TABS } from './constants';
 
 export const chromise = () => Promise.resolve(window.chrome);
 
 const set = tabs => state => tabs;
+const noOp = state => state;
 
 export const setTabs = tabs => ({
   type: SET_TABS,
@@ -16,16 +17,22 @@ const query = (qObj = { currentWindow: true }) =>
 export const getTabs = () => dispatch =>
   query().then(tabs => dispatch(setTabs(tabs)));
 
-//
-// export const move = ({ id, index }) =>
-//   new Promise(cb =>
-//     chromise().then(chrome => chrome.tabs.move(id, { index }), cb)
-//   );
-//
-// export const compUrl = (a, b) => a.url.localeCompare(b.url);
-// export const tabMap = sTabs => sTabs.map(({ id }, index) => ({ id, index }));
-//
-// const get = qObj => state => tabs;
+export const mvTabs = () => ({
+  type: MOVE_TAB,
+  curry: noOp,
+});
+
+export const mvPromise = ({ id, index }) =>
+  new Promise(cb =>
+    chromise().then(chrome => chrome.tabs.move(id, { index }), cb)
+  );
+
+export const moveTabs = ({ id, index }) => dispatch =>
+  Promise.resolve(mvPromise({ id, index }))
+    .then(mvTabs)
+    .then(dispatch)
+    .then(getTabs)
+    .then(dispatch);
 
 const TabObj = {
   active: false,

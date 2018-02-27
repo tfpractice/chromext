@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Promise from 'bluebird';
+import moment from 'moment';
 import logo from './logo.svg';
 import { Tabs as TabUtils } from '../../utils';
 import Tabs from '../tabs';
@@ -8,12 +9,37 @@ import './app.css';
 const { tabMap, query, compUrl, move } = TabUtils;
 
 const sortTabs = tabs => tabs.sort(compUrl);
+const searchTab = ({ url }) =>
+  new Promise((resolve, reject) => {
+    window.chrome.history.search({ text: url }, resolve);
+  });
 
 const queryTabs = () => {
   query({ currentWindow: true })
     .then(sortTabs)
+    .then(tabs => {
+      Promise.resolve(tabs)
+        .map(searchTab)
+        .map(res => {
+          console.log('res', res);
+          console.log(
+            'moment(res.lastVisitTime)',
+            moment(res.lastVisitTime).format('HH/DD/MM')
+          );
+        });
+      return tabs;
+    })
     .then(tabMap)
-    .then(tabs => Promise.all(tabs.map(move)))
+    .map(move)
+
+    // .then(tabs => {
+    //   console.log('text: tabs[0].url', tabs[0]);
+    //   window.chrome.history.search({ text: tabs[0].url }, res => {
+    //     console.log('res', res);
+    //   });
+    //
+    //   return Promise.all(tabs.map(move));
+    // })
     .then(all => console.log('all', all));
 };
 
