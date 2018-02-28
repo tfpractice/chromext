@@ -11,7 +11,7 @@ export const compVisit = (a, b) => compareBin(lastVisit(a), lastVisit(b));
 
 export const tabMap = tArr => tArr.map(({ id }, index) => ({ id, index }));
 
-export const query = qObj =>
+export const query = (qObj = { currentWindow: true }) =>
   new Promise(cb => chromise().then(chrome => chrome.tabs.query(qObj, cb)));
 
 export const move = ({ id, index }) =>

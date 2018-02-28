@@ -6,7 +6,7 @@ import red from './reducer';
 
 //
 // const predicate = (getState, action) => false;
-const collapsed = (getState, action) => action.type;
+const collapsed = (getState, action) => false; // action.type;
 const log = createLogger({ collapsed });
 
 export default state => middify(thunk, log)(createStore)(red, state);
