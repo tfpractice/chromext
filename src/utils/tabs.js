@@ -1,7 +1,5 @@
 import Promise from 'bluebird';
-import { Actions } from '../store';
-
-const { Tabs } = Actions;
+import { searchUrl, lastVisit } from './history';
 
 export const url = ({ url }) => url;
 export const title = ({ title }) => title;
@@ -19,10 +17,8 @@ export const move = ({ id, index }) =>
     chromise().then(chrome => chrome.tabs.move(id, { index }), cb)
   );
 
-const searchTab = ({ url }) =>
-  new Promise((resolve, reject) => {
-    window.chrome.history.search({ text: url }, resolve);
-  });
+export const setVisitTime = tab =>
+  searchUrl(url(tab)).then(v => ({ ...tab, lastVisitTime: lastVisit(v) }));
 
 //
 // const TabObj = {

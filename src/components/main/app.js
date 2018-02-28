@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import Promise from 'bluebird';
 import moment from 'moment';
 import logo from './logo.svg';
-import { Tabs as TabUtils } from '../../utils';
+import { Tabs as TabUtils, History } from '../../utils';
 import Tabs from '../tabs';
 import './app.css';
 
-const { tabMap, query, compUrl, move } = TabUtils;
-
+const { tabMap, query, compUrl, url, move } = TabUtils;
+const { searchUrl } = History;
 const sortTabs = tabs => tabs.sort(compUrl);
-const searchTab = ({ url }) =>
-  new Promise((resolve, reject) => {
-    window.chrome.history.search({ text: url }, resolve);
-  });
 
 const queryTabs = () => {
   query({ currentWindow: true })
     .then(sortTabs)
     .then(tabs => {
       Promise.resolve(tabs)
-        .map(searchTab)
+        .map(url)
+        .map(searchUrl)
         .map(res => {
           console.log('res', res);
           console.log(

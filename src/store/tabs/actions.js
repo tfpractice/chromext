@@ -1,6 +1,11 @@
 import Promise from 'bluebird';
 import { SORT_TABS, SET_TABS, MOVE_TAB, GET_TABS } from './constants';
 
+import * as Utils from '../../utils';
+
+// const { Tabs: { setVisitTime }} = Utils;
+
+console.log('Utils', Utils);
 export const chromise = () => Promise.resolve(window.chrome);
 
 const set = tabs => state => tabs;
@@ -15,7 +20,14 @@ const query = (qObj = { currentWindow: true }) =>
   new Promise(cb => chromise().then(chrome => chrome.tabs.query(qObj, cb)));
 
 export const getTabs = () => dispatch =>
-  query().then(tabs => dispatch(setTabs(tabs)));
+  query()
+    .map(Utils.Tabs.setVisitTime)
+    .then(tabs => {
+      const visits = tabs.map(Utils.History.lastVisit);
+
+      console.log('visits', visits);
+      return dispatch(setTabs(tabs));
+    });
 
 export const mvTabs = () => ({
   type: MOVE_TAB,
