@@ -5,10 +5,13 @@ import { Tabs as TabUtils } from '../../utils';
 
 const mapState = ({ tabs }) => ({ tabs });
 
-const Tabs = ({ tabs, getTabs }) => (
+const Tabs = ({ tabs, getTabs, urlSort, titleSort, visitSort }) => (
   <main>
     <h1>these are your tabss</h1>
     <button onClick={getTabs}>getTabs</button>
+    <button onClick={urlSort}>urlSort</button>
+    <button onClick={titleSort}>titleSort</button>
+    <button onClick={visitSort}>visitSort</button>
     <ul>{tabs.map(t => <li>{TabUtils.title(t)}</li>)}</ul>
   </main>
 );

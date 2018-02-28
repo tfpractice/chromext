@@ -1,10 +1,13 @@
 import moment from 'moment';
 
 export const lastVisit = ({ lastVisitTime }) => moment(lastVisitTime).toDate();
-export const isSame = a => b => moment(a).isSame(b);
-export const isBefore = a => b => (moment(a).isBefore(b) ? -1 : 1);
+export const isSame = a => b => moment(a).isSame(moment(b));
+export const isBefore = a => b => (moment(a).isBefore(moment(b)) ? -1 : 1);
 export const compare = a => b => (isSame(a)(b) ? 0 : isBefore(a)(b));
-export const compareBin = (a, b) => compare(a)(b);
+export const compareBin = (a, b) =>
+  console.log('momen(a', moment(a).toDate(), moment(b).toDate()) ||
+  console.log('compare(a)(b)', compare(a)(b)) ||
+  compare(a)(b);
 
 export const searchUrl = text =>
   new Promise(resolve => {

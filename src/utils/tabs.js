@@ -1,14 +1,16 @@
+import { chromise } from './chrome';
 import Promise from 'bluebird';
-import { searchUrl, lastVisit } from './history';
+import { searchUrl, lastVisit, compareBin } from './history';
 
 export const url = ({ url }) => url;
 export const title = ({ title }) => title;
 
 export const compUrl = (a, b) => a.url.localeCompare(b.url);
 export const compTitle = (a, b) => a.title.localeCompare(b.title);
+export const compVisit = (a, b) => compareBin(lastVisit(a), lastVisit(b));
+
 export const tabMap = tArr => tArr.map(({ id }, index) => ({ id, index }));
 
-export const chromise = () => Promise.resolve(window.chrome);
 export const query = qObj =>
   new Promise(cb => chromise().then(chrome => chrome.tabs.query(qObj, cb)));
 
