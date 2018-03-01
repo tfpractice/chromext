@@ -1,13 +1,34 @@
 import Promise from 'bluebird';
-import { SORT_TABS, SET_TABS, MOVE_TAB, GET_TABS } from './constants';
+import {
+  SORT_TABS,
+  CREATE_TAB,
+  DROP_TAB,
+  SET_TABS,
+  MOVE_TAB,
+  GET_TABS,
+} from './constants';
 
 import * as Utils from '../../utils';
 
 const { Tabs: { query, move }} = Utils;
 
+const addDate = tab => ({ ...tab, createdAt: Date.now() });
+
 const set = tabs => state => tabs;
 const noOp = state => [ ...state ];
-const sort = order => state => console.log('sort') || [ ...state ].sort(order);
+const sort = order => state => [ ...state ].sort(order);
+const create = tab => state => [ ...state, tab ];
+const drop = ({ id }) => state => state.filter(t => t.id !== id);
+
+export const createTab = tab => ({
+  type: CREATE_TAB,
+  curry: create(addDate(tab)),
+});
+
+export const dropTab = tab => ({
+  type: DROP_TAB,
+  curry: drop(tab),
+});
 
 export const setTabs = tabs => ({
   type: SET_TABS,

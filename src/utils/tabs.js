@@ -16,7 +16,7 @@ export const query = (qObj = { currentWindow: true }) =>
 
 export const move = ({ id, index }) =>
   new Promise(cb =>
-    chromise().then(chrome => chrome.tabs.move(id, { index }), cb)
+    chromise().then(chrome => chrome.tabs.move(id, { index }, cb))
   );
 
 export const setVisitTime = tab =>
