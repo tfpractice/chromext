@@ -4,10 +4,14 @@ import { searchUrl, lastVisit, compareBin } from './history';
 
 export const url = ({ url }) => url;
 export const title = ({ title }) => title;
+export const audible = ({ audible }) => audible;
+export const createdAt = ({ createdAt }) => createdAt;
 
 export const compUrl = (a, b) => a.url.localeCompare(b.url);
+export const compAudio = (a, b) => audible(a) - audible(b);
 export const compTitle = (a, b) => a.title.localeCompare(b.title);
 export const compVisit = (a, b) => compareBin(lastVisit(a), lastVisit(b));
+export const compCreated = (a, b) => a.createdAt - b.createdAt;
 
 export const tabMap = tArr => tArr.map(({ id }, index) => ({ id, index }));
 
@@ -21,6 +25,8 @@ export const move = ({ id, index }) =>
 
 export const setVisitTime = tab =>
   searchUrl(url(tab)).then(v => ({ ...tab, lastVisitTime: lastVisit(v) }));
+
+export const timeQuery = () => query().map(setVisitTime);
 
 //
 // const TabObj = {

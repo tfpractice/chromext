@@ -10,19 +10,32 @@ import {
 
 import * as Utils from '../../utils';
 
-const { Tabs: { query, move }} = Utils;
+const { Tabs: { query, timeQuery, move }} = Utils;
+const cTime = t => t.createdAt || t.lastVisitTime || Date.now();
+const addDate = tab => ({ ...tab, createdAt: cTime(tab) });
+const add = tab => state =>
+  new Set(state.map(({ id }) => id)).has(tab.id)
+    ? state
+    : [ ...state, addDate(tab) ];
+const addBin = (state, tab) => add(tab)(state);
 
-const addDate = tab => ({ ...tab, createdAt: Date.now() });
-
-const set = tabs => state => tabs;
+const set = tabs => state => tabs.reduce(addBin, state);
 const noOp = state => [ ...state ];
 const sort = order => state => [ ...state ].sort(order);
-const create = tab => state => [ ...state, tab ];
+const create = tab => state => add(tab)(state);
 const drop = ({ id }) => state => state.filter(t => t.id !== id);
+
+const moveFn = ({ id, index }) => state =>
+  [ ...state ]
+    .map(t => (t.id === id ? null : t))
+    .slice(0, index)
+    .concat(state.find(u => u.id === id))
+    .concat(drop({ id })(state.slice(index)))
+    .filter(x => x);
 
 export const createTab = tab => ({
   type: CREATE_TAB,
-  curry: create(addDate(tab)),
+  curry: create(tab),
 });
 
 export const dropTab = tab => ({
@@ -32,7 +45,7 @@ export const dropTab = tab => ({
 
 export const setTabs = tabs => ({
   type: SET_TABS,
-  curry: set(tabs),
+  curry: set(tabs.map(addDate)),
 });
 
 export const getAction = tabs => ({
@@ -45,44 +58,40 @@ export const sortAction = order => ({
   curry: sort(order),
 });
 
-export const moveAction = () => ({
+export const moveAction = ({ id, index }) => ({
   type: MOVE_TAB,
-  curry: noOp,
+  curry: moveFn({ id, index }),
 });
 
 export const getTabs = () => dispatch =>
-  query()
-    .map(Utils.Tabs.setVisitTime)
+  timeQuery()
     .then(setTabs)
     .then(dispatch);
 
 export const moveTab = ({ id, index }) => dispatch =>
   move({ id, index })
     .then(moveAction)
-    .then(dispatch)
-    .then(getTabs)
     .then(dispatch);
 
-export const urlSort = () => dispatch =>
-  query()
-    .map(Utils.Tabs.setVisitTime)
+export const urlSort = () => (dispatch, getState) => {
+  console.log('getState()', getState());
+  return timeQuery()
     .then(sort(Utils.Tabs.compUrl))
     .then(Utils.Tabs.tabMap)
     .map(moveTab)
     .map(dispatch);
+};
 
 export const titleSort = () => dispatch =>
-  query()
-    .map(Utils.Tabs.setVisitTime)
+  timeQuery()
     .then(sort(Utils.Tabs.compTitle))
     .then(Utils.Tabs.tabMap)
     .map(moveTab)
     .map(dispatch);
 
-export const visitSort = () => dispatch =>
-  query()
-    .map(Utils.Tabs.setVisitTime)
-    .then(sort(Utils.Tabs.compVisit))
+export const visitSort = () => (dispatch, getState) =>
+  Promise.resolve(getState().tabs)
+    .then(sort(Utils.Tabs.compDate))
     .then(Utils.Tabs.tabMap)
     .map(moveTab)
     .map(dispatch);
