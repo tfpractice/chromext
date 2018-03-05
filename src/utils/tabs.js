@@ -1,6 +1,7 @@
 import { chromise } from './chrome';
 import Promise from 'bluebird';
 import { searchUrl, lastVisit, compareBin } from './history';
+import acorn from 'acorn';
 
 export const url = ({ url }) => url;
 export const title = ({ title }) => title;
