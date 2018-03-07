@@ -10,13 +10,17 @@ import {
 
 import * as Utils from '../../utils';
 
-const { Tabs: { query, timeQuery, move }} = Utils;
+const { Tabs: { query, timeQuery, move, dloads }} = Utils;
 const cTime = t => t.createdAt || t.lastVisitTime || Date.now();
 const addDate = tab => ({ ...tab, createdAt: cTime(tab) });
+const mod = tab => state =>
+  state.map(t => (t.id === tab.id ? { ...t, ...tab } : t));
+
 const add = tab => state =>
   new Set(state.map(({ id }) => id)).has(tab.id)
-    ? state
+    ? mod(tab)(state)
     : [ ...state, addDate(tab) ];
+
 const addBin = (state, tab) => add(tab)(state);
 
 const set = tabs => state => tabs.reduce(addBin, state);

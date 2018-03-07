@@ -10,17 +10,8 @@
     "64": "favicon.ico"
   },
   "options_page": "index.html",
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "history",
-    "downloads",
-    "tabCapture"
-  ],
-  "background": {
-    "page": "index.html",
-    "persistent": false
-  },
+  "incognito": "split",
+  "permissions": ["activeTab", "tabs", "history", "downloads", "tabCapture"],
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "index.html",

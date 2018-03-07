@@ -7,6 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 import getStore from './store';
 import { Provider } from 'react-redux';
 import { registerEvents } from './utils';
+import { Actions } from './store';
 
 global.Promise = Promise;
 

@@ -24,6 +24,15 @@ export const move = ({ id, index }) =>
     chromise().then(chrome => chrome.tabs.move(id, { index }, cb))
   );
 
+export const hrsAgo = (num = 2) =>
+  new Date().setHours(new Date().getHours() - 23 % num);
+
+export const dloads = (startedAfter = `${hrsAgo(2)}`) => {
+  console.log('startedAfter', startedAfter);
+  return new Promise(cb =>
+    chromise().then(chrome => chrome.downloads.search({ startedAfter }, cb))
+  );
+};
 export const setVisitTime = tab =>
   searchUrl(url(tab)).then(v => ({ ...tab, lastVisitTime: lastVisit(v) }));
 
